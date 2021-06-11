@@ -18,7 +18,7 @@ const fetchWeatherByCity = (city, number) => {
 
 module.exports.handler = async (event, context, callback) => {
   const { city } = JSON.parse(event.body);
-  const weather = await etchWeatherByCity(city, resultNumber);
+  const weather = await fetchWeatherByCity(city, resultNumber);
   callback(null, {
     statusCode: 200,
     body: JSON.stringify(weather),
