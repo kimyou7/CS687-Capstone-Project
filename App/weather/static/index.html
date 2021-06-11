@@ -27,7 +27,7 @@
             margin: 20px auto;
         }
 
-        .booksDiv {
+        .weathersDiv {
             display: flex;
             width: 80%;
             margin: auto;
@@ -35,13 +35,13 @@
             flex-wrap: wrap;
         }
 
-        .bookDiv {
+        .weatherDiv {
             margin: 20px;
             width: 200px;
         }
 
-        .bookDiv img {
-            width: 50%;
+        .weatherDiv img {
+            width: 80%;
         }
     </style>
 
@@ -58,10 +58,10 @@
         <input id="searchInput" name="searchInput" type="text" /><button>Search</button>
     </div>
 
-    <div class="booksDiv">
+    <div class="weathersDiv">
         {{#weather}}
-        <div class="bookDiv">
-            <div><img alt="book" src="{{image}}" /></div>
+        <div class="weatherDiv">
+            <div><img alt="weather" src="{{image}}" /></div>
             <div>{{name}}</div>
             <div>{{degree}}</div>
             <div>{{today}}</div>
@@ -78,7 +78,7 @@
 <script>
     const SEARCH_API = '{{& searchAPI}}'; // From the get-index.js
     const input = $('#searchInput');
-    const booksDiv = $('#booksDiv');
+    const weathersDiv = $('#weathersDiv');
     input.on('keyup', ({ keyCode }) => {
         if (keyCode === 13) onSearch();
     });
@@ -86,20 +86,20 @@
     function onSearch() {
         const keyword = input.val();
         if (keyword.length !== 0) {
-            booksDiv.toggle('slide', { direction: 'down' });
+            weathersDiv.toggle('slide', { direction: 'down' });
             const btn = $('#searchBtn');
             btn.attr('disabled', 'disabled');
             input.val('');
-            axios.post(SEARCH_API, { name: keyword })
+            axios.post(SEARCH_API, { city: keyword })
                 .then((response => {
                     let content = '';
-                    response.data.Items.forEach(weather => content += `<div class="bookDiv">
-                                                              <div><img alt="book" src="${weather.image}" /></div>
+                    response.data.Items.forEach(weather => content += `<div class="weatherDiv">
+                                                              <div><img alt="weather" src="${weather.image}" /></div>
                                                               <div>${weather.name}</div>
                                                             </div>`);
-                    booksDiv.html(content);
+                    weathersDiv.html(content);
                     btn.removeAttr('disabled');
-                    booksDiv.toggle('slide', { direction: 'down' });
+                    weathersDiv.toggle('slide', { direction: 'down' });
                 })).catch(err => console.log(err));
         }
     }
